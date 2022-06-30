@@ -1,0 +1,79 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: kongapigw.core.modules.krateo.io
+spec:
+  group: core.modules.krateo.io
+  names:
+    kind: kongapigw
+    plural: kongapigw
+    singular: kongapigw
+  versions:
+    - name: v1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              properties:
+                kongapigw:
+                  description: kongapigw helm chart values
+                  type: object
+                  properties:
+                    version:
+                      description: kongapigw helm chart version
+                      type: string
+                    postgresql:
+                      description: kongapigw helm chart postgresql values
+                      type: object
+                      properties:
+                        enabled:
+                          description: kongapigw helm chart postgresql enabled
+                          type: boolean
+                    admin:
+                      description: kongapigw helm chart admin values
+                      type: object
+                      properties:
+                        enabled:
+                          description: kongapigw helm chart admin enabled
+                          type: boolean
+                        http:
+                          description: kongapigw helm chart admin http values
+                          type: object
+                          properties:
+                            enabled:
+                              description: kongapigw helm chart admin http enabled
+                              type: boolean
+                        https:
+                          description: kongapigw helm chart admin https values
+                          type: object
+                          properties:
+                            enabled:
+                              description: kongapigw helm chart admin https enabled
+                              type: boolean
+                        type:
+                          description: kongapigw helm chart admin service type
+                          type: string
+                    proxy:
+                      description: kongapigw helm chart proxy values
+                      type: object
+                      properties:
+                        type:
+                          description: kongapigw helm chart proxy service type
+                          type: string
+                        http:
+                          description: kongapigw helm chart proxy http values
+                          type: object
+                          properties:
+                            nodePort:
+                              description: kongapigw helm chart proxy http nodePort value
+                              type: integer
+                        https:
+                          description: kongapigw helm chart proxy https values
+                          type: object
+                          properties:
+                            nodePort:
+                              description: kongapigw helm chart proxy https nodePort value
+                              type: integer

@@ -1,0 +1,54 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: argo-cd.core.modules.krateo.io
+spec:
+  group: core.modules.krateo.io
+  names:
+    kind: argo-cd
+    plural: argo-cd
+    singular: argo-cd
+  versions:
+    - name: v1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              properties:
+                protocol:
+                  description: protocol of uris, i.e. http or https
+                  type: string
+                domain:
+                  description: domain of uris, i.e. krateo.site
+                  type: string
+                domainPort:
+                  description: port of uris, i.e. <domain>:32000
+                  type: integer
+                argo-cd:
+                  description: argo-cd helm chart values
+                  type: object
+                  properties:
+                    version:
+                      description: argo-cd helm chart version
+                      type: string
+                    hostname:
+                      description: hostname of api, i.e. api.<domain>
+                      type: string
+                    service:
+                      description: service of argo-cd
+                      type: object
+                      properties:
+                        http:
+                          description: service http of argo-cd
+                          type: object
+                          properties:
+                            port:
+                              description: service http port of argo-cd
+                              type: integer
+                  required:
+                  - hostname
+              required:
+              - domain

@@ -1,0 +1,20 @@
+apiVersion: modules.krateo.io/v1
+kind: Core
+metadata:
+  name: core
+spec:
+  platform: openshift
+  protocol: https
+  domain: krateoplatformops.io
+  domainPort: 443
+  app:
+    hostname: app
+  api:
+    hostname: api
+  argo-cd:
+    hostname: argocd
+  socket-service:
+    hostname: socket
+  kong:
+    postgresql:
+      enabled: true

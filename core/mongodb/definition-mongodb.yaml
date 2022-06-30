@@ -1,0 +1,27 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: CompositeResourceDefinition
+metadata:
+  name: mongodb.core.modules.krateo.io
+spec:
+  group: core.modules.krateo.io
+  names:
+    kind: mongodb
+    plural: mongodb
+    singular: mongodb
+  versions:
+    - name: v1
+      served: true
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          properties:
+            spec:
+              properties:
+                mongodb:
+                  description: mongodb helm chart values
+                  type: object
+                  properties:
+                    version:
+                      description: mongodb helm chart version
+                      type: string

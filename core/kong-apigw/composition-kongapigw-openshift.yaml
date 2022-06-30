@@ -1,0 +1,81 @@
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: kongapigw-ocp.core.modules.krateo.io
+  labels:
+    platform: openshift
+spec:
+  compositeTypeRef:
+    apiVersion: core.modules.krateo.io/v1
+    kind: kongapigw
+  resources:
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: InjectedIdentity
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: kongapigw
+        spec:
+          forProvider:
+            chart:
+              name: kong
+              repository: https://charts.konghq.com
+              version: 2.10.2
+            namespace: krateo-system
+            values:
+              postgresql:
+                  volumePermissions:
+                    enabled: false
+                    securityContext:
+                      runAsUser: "auto"
+                  primary:
+                    containerSecurityContext:
+                      enabled: false
+                    podSecurityContext:
+                      enabled: false
+      patches:
+        - fromFieldPath: spec.kongapigw.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: spec.kongapigw.postgresql.enabled
+          toFieldPath: spec.forProvider.values.postgresql.enabled
+        - fromFieldPath: spec.kongapigw.admin.enabled
+          toFieldPath: spec.forProvider.values.admin.enabled
+        - fromFieldPath: spec.kongapigw.admin.http.enabled
+          toFieldPath: spec.forProvider.values.admin.http.enabled
+        - fromFieldPath: spec.kongapigw.admin.https.enabled
+          toFieldPath: spec.forProvider.values.admin.https.enabled
+        - fromFieldPath: spec.kongapigw.admin.type
+          toFieldPath: spec.forProvider.values.admin.type
+        - fromFieldPath: spec.kongapigw.proxy.http.nodePort
+          toFieldPath: spec.forProvider.values.proxy.http.nodePort
+        - fromFieldPath: spec.kongapigw.proxy.https.nodePort
+          toFieldPath: spec.forProvider.values.proxy.https.nodePort
+        - fromFieldPath: spec.kongapigw.proxy.type
+          toFieldPath: spec.forProvider.values.proxy.type
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-kongapigw-apigateway"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"

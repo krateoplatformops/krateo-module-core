@@ -1,0 +1,764 @@
+---
+apiVersion: apiextensions.crossplane.io/v1
+kind: Composition
+metadata:
+  name: k8s.core.modules.krateo.io
+spec:
+  writeConnectionSecretsToNamespace: krateo-system
+  compositeTypeRef:
+    apiVersion: modules.krateo.io/v1
+    kind: Core
+  resources:
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: InjectedIdentity
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+      readinessChecks:
+        - type: None
+    - base:
+        apiVersion: core.modules.krateo.io/v1
+        kind: argo-cd
+        spec:
+          argo-cd:
+            version: 4.9.8
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-argocd"
+        - fromFieldPath: spec.protocol
+          toFieldPath: spec.protocol
+        - fromFieldPath: spec.domain
+          toFieldPath: spec.domain
+        - fromFieldPath: spec.argo-cd.version
+          toFieldPath: spec.argo-cd.version
+        - fromFieldPath: spec.argo-cd.hostname
+          toFieldPath: spec.argo-cd.hostname
+        - fromFieldPath: spec.argo-cd.service.http.port
+          toFieldPath: spec.argo-cd.service.http.port
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: spec.platform
+          toFieldPath: metadata.labels[platform]
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: dashboard-common-chart
+        spec:
+          forProvider:
+            chart:
+              name: dashboard-common-chart
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+            values:
+              services:
+                hosts:
+                  auth: "http://auth-service-service.krateo-system.svc"
+                  deployment: "http://deployment-service-service.krateo-system.svc"
+                  template: "http://template-service-service.krateo-system.svc"
+                  endpoint: "http://endpoint-service-service.krateo-system.svc"
+                  git: "http://git-service-service.krateo-system.svc"
+                  argocd: "http://argocd-service-service.krateo-system.svc"
+                  log: "http://log-service-service.krateo-system.svc"
+                  socket: "http://socket-service-service.krateo-system.svc"
+                  bridge: "http://kube-bridge-service.krateo-system.svc"
+                  kubernetes: "http://kubernetes-service-service.krateo-system.svc"
+                  codequality: "http://codequality-service-service.krateo-system.svc"
+                  pipeline: "http://pipeline-service-service.krateo-system.svc"
+                  secret: "http://secret-service-service.krateo-system.svc"
+                  provider: "http://provider-service-service.krateo-system.svc"
+                  keptn: ""
+            set:
+              - name: mongodb.password
+                valueFrom:
+                  secretKeyRef:
+                    name: krateo-mongodb
+                    namespace: krateo-system
+                    key: mongodb-passwords
+      patches:
+        - fromFieldPath: spec.dashboard-common-chart.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-dashboard-common-chart"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+        # - fromFieldPath: spec.dashboard-common-chart.mongodb.uri
+        #   toFieldPath: spec.forProvider.values.mongodb.uri
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: app
+        spec:
+          forProvider:
+            chart:
+              name: app
+              repository: https://charts.krateo.io
+              version: 1.0.2
+            namespace: krateo-system
+            values:
+              fullnameOverride: app
+      patches:
+        - fromFieldPath: spec.app.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-app"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: spec.protocol
+              - fromFieldPath: spec.api.hostname
+              - fromFieldPath: spec.domain
+              - fromFieldPath: spec.domainPort
+            strategy: string
+            string:
+              fmt: "%s://%s.%s:%d"
+          toFieldPath: spec.forProvider.values.uris.api
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: spec.protocol
+              - fromFieldPath: spec.socket-service.hostname
+              - fromFieldPath: spec.domain
+              - fromFieldPath: spec.domainPort
+            strategy: string
+            string:
+              fmt: "%s://%s.%s:%d"
+          toFieldPath: spec.forProvider.values.uris.socket
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: spec.app.hostname
+              - fromFieldPath: spec.domain
+            strategy: string
+            string:
+              fmt: "%s.%s"
+          toFieldPath: spec.forProvider.values.ingress.host
+        - fromFieldPath: spec.app.ingress
+          toFieldPath: spec.forProvider.values.ingress
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: argocd-service
+        spec:
+          forProvider:
+            chart:
+              name: argocd-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.argocd-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-argocd-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: auth-service
+        spec:
+          forProvider:
+            chart:
+              name: auth-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.auth-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-auth-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: deployment-service
+        spec:
+          forProvider:
+            chart:
+              name: deployment-service
+              repository: https://charts.krateo.io
+              version: 1.0.1
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.deployment-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-deployment-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: endpoint-service
+        spec:
+          forProvider:
+            chart:
+              name: endpoint-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.endpoint-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-endpoint-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: git-service
+        spec:
+          forProvider:
+            chart:
+              name: git-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.git-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-git-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: kube-bridge
+        spec:
+          forProvider:
+            chart:
+              name: kube-bridge
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.kube-bridge.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-kube-bridge"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: kubernetes-service
+        spec:
+          forProvider:
+            chart:
+              name: kubernetes-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.kubernetes-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-kubernetes-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: log-service
+        spec:
+          forProvider:
+            chart:
+              name: log-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+            values:
+              podEnv:
+              - name: LOG_LEVEL
+                value: debug
+              - name: "MONGODB_URI"
+                valueFrom:
+                  secretKeyRef:
+                    name: krateo-secret
+                    key: MONGODB_URI
+      patches:
+        - fromFieldPath: spec.log-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-log-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: socket-service
+        spec:
+          forProvider:
+            chart:
+              name: socket-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+            value:
+              podEnv:
+              - name: LOG_LEVEL
+                value: debug
+              - name: "MONGODB_URI"
+                valueFrom:
+                  secretKeyRef:
+                    name: krateo-secret
+                    key: MONGODB_URI
+      patches:
+        - fromFieldPath: spec.socket-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-socket-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: spec.socket-service.hostname
+              - fromFieldPath: spec.domain
+            strategy: string
+            string:
+              fmt: "%s.%s"
+          toFieldPath: spec.forProvider.values.ingress.host
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: template-service
+        spec:
+          forProvider:
+            chart:
+              name: template-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.template-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-template-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: secret-service
+        spec:
+          forProvider:
+            chart:
+              name: secret-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.secret-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-secret-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: pipeline-service
+        spec:
+          forProvider:
+            chart:
+              name: pipeline-service
+              repository: https://charts.krateo.io
+              version: 1.0.4
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.pipeline-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-pipeline-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: codequality-service
+        spec:
+          forProvider:
+            chart:
+              name: codequality-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.codequality-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-codequality-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: api
+        spec:
+          forProvider:
+            chart:
+              name: api
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+            values:
+              podEnv:
+                - name: LOG_LEVEL
+                  value: info
+                - name: "COOKIE_SECRET"
+                  valueFrom:
+                    secretKeyRef:
+                      name: api-cookie-secret
+                      key: COOKIE_SECRET
+      patches:
+        - fromFieldPath: spec.api.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-api"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+        - fromFieldPath: spec.domain
+          toFieldPath: spec.forProvider.values.cookie.domain
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: spec.api.hostname
+              - fromFieldPath: spec.domain
+            strategy: string
+            string:
+              fmt: "%s.%s"
+          toFieldPath: spec.forProvider.values.ingress.host
+        - fromFieldPath: spec.api.ingress
+          toFieldPath: spec.forProvider.values.ingress
+        - type: CombineFromComposite
+          combine:
+            variables:
+              - fromFieldPath: spec.protocol
+              - fromFieldPath: spec.app.hostname
+              - fromFieldPath: spec.domain
+              - fromFieldPath: spec.domainPort
+            strategy: string
+            string:
+              fmt: "%s://%s.%s:%d"
+          toFieldPath: spec.forProvider.values.podEnv[0].value
+        - fromFieldPath: spec.api.cookie.secure
+          toFieldPath: spec.forProvider.values.cookie.secure
+    - base:
+        apiVersion: kubernetes.crossplane.io/v1alpha1
+        kind: ProviderConfig
+        spec:
+          credentials:
+            source: InjectedIdentity
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-k8s-pc-in"
+    # - base:
+    #     apiVersion: helm.crossplane.io/v1beta1
+    #     kind: Release
+    #     metadata:
+    #       annotations:
+    #         crossplane.io/external-name: kong-apigateway
+    #     spec:
+    #       forProvider:
+    #         chart:
+    #           name: kong
+    #           repository: https://charts.konghq.com
+    #           version: 2.10.2
+    #         namespace: krateo-system
+    #   patches:
+    #     - fromFieldPath: spec.kong.version
+    #       toFieldPath: spec.forProvider.chart.version
+    #     - fromFieldPath: spec.kong.postgresql.enabled
+    #       toFieldPath: spec.forProvider.values.postgresql.enabled
+    #     - fromFieldPath: spec.kong.admin.enabled
+    #       toFieldPath: spec.forProvider.values.admin.enabled
+    #     - fromFieldPath: spec.kong.admin.http.enabled
+    #       toFieldPath: spec.forProvider.values.admin.http.enabled
+    #     - fromFieldPath: spec.kong.admin.https.enabled
+    #       toFieldPath: spec.forProvider.values.admin.https.enabled
+    #     - fromFieldPath: spec.kong.admin.type
+    #       toFieldPath: spec.forProvider.values.admin.type
+    #     - fromFieldPath: spec.kong.proxy.http.nodePort
+    #       toFieldPath: spec.forProvider.values.proxy.http.nodePort
+    #     - fromFieldPath: spec.kong.proxy.https.nodePort
+    #       toFieldPath: spec.forProvider.values.proxy.https.nodePort
+    #     - fromFieldPath: spec.kong.proxy.type
+    #       toFieldPath: spec.forProvider.values.proxy.type
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: metadata.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-release-kong-apigateway"
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: spec.providerConfigRef.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-helm-pc-in"
+    - base:
+        apiVersion: core.modules.krateo.io/v1
+        kind: kongapigw
+        spec:
+          mongodb:
+            version: 2.10.2
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-kongapigw"
+        - fromFieldPath: spec.kongapigw.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: spec.kongapigw.postgresql.enabled
+          toFieldPath: spec.forProvider.values.postgresql.enabled
+        - fromFieldPath: spec.kongapigw.admin.enabled
+          toFieldPath: spec.forProvider.values.admin.enabled
+        - fromFieldPath: spec.kongapigw.admin.http.enabled
+          toFieldPath: spec.forProvider.values.admin.http.enabled
+        - fromFieldPath: spec.kongapigw.admin.https.enabled
+          toFieldPath: spec.forProvider.values.admin.https.enabled
+        - fromFieldPath: spec.kongapigw.admin.type
+          toFieldPath: spec.forProvider.values.admin.type
+        - fromFieldPath: spec.kongapigw.proxy.http.nodePort
+          toFieldPath: spec.forProvider.values.proxy.http.nodePort
+        - fromFieldPath: spec.kongapigw.proxy.https.nodePort
+          toFieldPath: spec.forProvider.values.proxy.https.nodePort
+        - fromFieldPath: spec.kongapigw.proxy.type
+          toFieldPath: spec.forProvider.values.proxy.type
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: spec.platform
+          toFieldPath: metadata.labels[platform]
+    - base:
+        apiVersion: core.modules.krateo.io/v1
+        kind: mongodb
+        spec:
+          mongodb:
+            version: 12.1.21
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-mongodb"
+        - fromFieldPath: spec.mongodb.version
+          toFieldPath: spec.mongodb.version
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: spec.platform
+          toFieldPath: metadata.labels[platform]
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: provider-service
+        spec:
+          forProvider:
+            chart:
+              name: provider-service
+              repository: https://charts.krateo.io
+              version: 1.0.0
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.provider-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-provider-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"

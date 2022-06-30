@@ -1,0 +1,28 @@
+apiVersion: meta.pkg.crossplane.io/v1alpha1
+kind: Configuration
+metadata:
+  name: krateo-module-core
+  annotations:
+    meta.crossplane.io/maintainer: Diego Braga <diego.braga@kiratech,it>
+    meta.crossplane.io/keywords: krateo, core, module, kubernetes, platform, reference
+    meta.crossplane.io/source: github.com/krateoplatformops/krateo-module-core
+    meta.crossplane.io/license: Apache-2.0
+    meta.crossplane.io/description: |
+      This reference platform Configuration for Kubernetes and Data Services
+      is a starting point to build, run, and operate your own internal cloud
+      platform and offer a self-service console and API to your internal teams.
+
+    meta.crossplane.io/readme: |
+      This reference platform `Configuration` for Kubernetes and Data Services
+      is a starting point to build, run, and operate your own internal cloud
+      platform and offer a self-service console and API to your internal teams.
+
+      It provides platform APIs to provision fully configured Krateo Core
+spec:
+  crossplane:
+    version: ">=v1.8.0-0"
+  dependsOn:
+    - provider: registry.upbound.io/crossplane/provider-helm
+      version: ">=v0.10.0-0"
+    - provider: registry.upbound.io/crossplane/provider-kubernetes
+      version: ">=v0.3.0-0"
