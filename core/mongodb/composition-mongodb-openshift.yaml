@@ -68,3 +68,5 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-helm-pc-in"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.namespace

@@ -18,6 +18,9 @@ spec:
           properties:
             spec:
               properties:
+                namespace:
+                  description: Kubernetes namespace for Krateo, i.e. krateo-system
+                  type: string
                 kongapigw:
                   description: kongapigw helm chart values
                   type: object

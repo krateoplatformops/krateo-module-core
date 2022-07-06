@@ -121,6 +121,8 @@ spec:
             - type: string
               string:
                 fmt: "%s-operator-argocd"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.manifest.metadata.namespace
     - base:
         apiVersion: pkg.crossplane.io/v1alpha1
         kind: ControllerConfig
@@ -162,6 +164,8 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-argocd-pc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.credentials.secretRef.namespace
     - base:
         apiVersion: argocd.krateoplatformops.io/v1alpha1
         kind: Token
@@ -193,35 +197,5 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-argocd-cc"
-    # - base:
-    #     apiVersion: kubernetes.crossplane.io/v1alpha1
-    #     kind: Object
-    #     spec:
-    #       forProvider:
-    #         manifest:
-    #           apiVersion: v1
-    #           kind: ConfigMap
-    #           metadata:
-    #             name: argocd-cm
-    #             namespace: krateo-system
-    #             labels:
-    #               app.kubernetes.io/name: argocd-cm
-    #               app.kubernetes.io/part-of: argocd
-    #           data:
-    #             # add an additional local user with apiKey and login capabilities
-    #             #   apiKey - allows generating API keys
-    #             #   login - allows to login using UI
-    #             accounts.krateo-dashboard: apiKey, login
-    #   patches:
-    #     - fromFieldPath: metadata.name
-    #       toFieldPath: spec.providerConfigRef.name
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-provider-k8s-providerconfig-incluster"
-    #     - fromFieldPath: metadata.name
-    #       toFieldPath: metadata.name
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-argocd-cm"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace

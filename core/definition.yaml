@@ -25,6 +25,9 @@ spec:
                 platform:
                   description: Kubernetes distribution for Krateo, i.e. kubernetes, openshift
                   type: string
+                namespace:
+                  description: Kubernetes namespace for Krateo, i.e. krateo-system
+                  type: string
                 protocol:
                   description: protocol of uris, i.e. http or https
                   type: string

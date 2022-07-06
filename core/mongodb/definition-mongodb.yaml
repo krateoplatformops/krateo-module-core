@@ -18,6 +18,9 @@ spec:
           properties:
             spec:
               properties:
+                namespace:
+                  description: Kubernetes namespace for Krateo, i.e. krateo-system
+                  type: string
                 mongodb:
                   description: mongodb helm chart values
                   type: object

@@ -18,6 +18,9 @@ spec:
           properties:
             spec:
               properties:
+                namespace:
+                  description: Kubernetes namespace for Krateo, i.e. krateo-system
+                  type: string
                 protocol:
                   description: protocol of uris, i.e. http or https
                   type: string

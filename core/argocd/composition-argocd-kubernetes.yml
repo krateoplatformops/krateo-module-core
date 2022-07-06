@@ -111,6 +111,8 @@ spec:
             string:
               fmt: "%s://%s.%s"
           toFieldPath: spec.forProvider.values.ingress.hosts[0]
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.namespace
     - base:
         apiVersion: pkg.crossplane.io/v1alpha1
         kind: ControllerConfig
@@ -152,6 +154,8 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-argocd-pc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.credentials.secretRef.namespace
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: Token
@@ -183,3 +187,5 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-argocd-cc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
