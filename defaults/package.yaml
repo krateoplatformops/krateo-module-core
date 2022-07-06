@@ -3,7 +3,7 @@ kind: Configuration
 metadata:
   name: krateo-module-core
 spec:
-  package: ghcr.io/krateoplatformops/krateo-module-core:v1.0.1
+  package: ghcr.io/krateoplatformops/krateo-module-core:v1.0.1-1.g2d7bdf6
   packagePullPolicy: IfNotPresent
   revisionActivationPolicy: Automatic
   revisionHistoryLimit: 1

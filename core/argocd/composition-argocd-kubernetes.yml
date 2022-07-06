@@ -156,11 +156,15 @@ spec:
                 fmt: "%s-provider-argocd-pc"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.credentials.secretRef.namespace
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.serverUrl
+          transforms:
+            - type: string
+              string:
+                fmt: "http://argocd-server.%s.svc:80"
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: Token
-        metadata:
-          namespace: krateo-system
         spec:
           forProvider:
             account: krateo-dashboard
