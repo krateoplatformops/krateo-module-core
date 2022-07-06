@@ -64,7 +64,7 @@ spec:
             chart:
               name: dashboard-common-chart
               repository: https://charts.krateo.io
-              version: 1.0.0
+              version: 1.0.1
             namespace: krateo-system
             values:
               services:
@@ -77,7 +77,6 @@ spec:
                   argocd: "http://argocd-service-service.krateo-system.svc"
                   log: "http://log-service-service.krateo-system.svc"
                   socket: "http://socket-service-service.krateo-system.svc"
-                  bridge: "http://kube-bridge-service.krateo-system.svc"
                   kubernetes: "http://kubernetes-service-service.krateo-system.svc"
                   codequality: "http://codequality-service-service.krateo-system.svc"
                   pipeline: "http://pipeline-service-service.krateo-system.svc"
@@ -110,6 +109,84 @@ spec:
           toFieldPath: spec.forProvider.namespace
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.set[0].valueFrom.secretKeyRef.namespace
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.auth
+          transforms:
+            - type: string
+              string:
+                fmt: "http://auth-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.deployment
+          transforms:
+            - type: string
+              string:
+                fmt: "http://deployment-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.template
+          transforms:
+            - type: string
+              string:
+                fmt: "http://template-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.endpoint
+          transforms:
+            - type: string
+              string:
+                fmt: "http://endpoint-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.git
+          transforms:
+            - type: string
+              string:
+                fmt: "http://git-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.argocd
+          transforms:
+            - type: string
+              string:
+                fmt: "http://argocd-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.log
+          transforms:
+            - type: string
+              string:
+                fmt: "http://log-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.socket
+          transforms:
+            - type: string
+              string:
+                fmt: "http://socket-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.kubernetes
+          transforms:
+            - type: string
+              string:
+                fmt: "http://kubernetes-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.codequality
+          transforms:
+            - type: string
+              string:
+                fmt: "http://codequality-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.pipeline
+          transforms:
+            - type: string
+              string:
+                fmt: "http://pipeline-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.secret
+          transforms:
+            - type: string
+              string:
+                fmt: "http://secret-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.provider
+          transforms:
+            - type: string
+              string:
+                fmt: "http://provider-service-service.%s.svc"
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
@@ -594,23 +671,10 @@ spec:
           toFieldPath: spec.forProvider.values.ingress.host
         - fromFieldPath: spec.api.ingress
           toFieldPath: spec.forProvider.values.ingress
-        - type: CombineFromComposite
-          combine:
-            variables:
-              - fromFieldPath: spec.protocol
-              - fromFieldPath: spec.app.hostname
-              - fromFieldPath: spec.domain
-              - fromFieldPath: spec.domainPort
-            strategy: string
-            string:
-              fmt: "%s://%s.%s:%d"
-          toFieldPath: spec.forProvider.values.podEnv[0].value
         - fromFieldPath: spec.api.cookie.secure
           toFieldPath: spec.forProvider.values.cookie.secure
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.namespace
-        - fromFieldPath: spec.namespace
-          toFieldPath: spec.forProvider.values.podEnv[1].valueFrom.secretKeyRef.namespace
     - base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: ProviderConfig

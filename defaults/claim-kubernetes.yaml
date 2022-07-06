@@ -3,6 +3,7 @@ kind: Core
 metadata:
   name: core
 spec:
+  namespace: jxp-krateo
   platform: kubernetes
   protocol: https
   domain: krateoplatformops.io
