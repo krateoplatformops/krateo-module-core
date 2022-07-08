@@ -39,15 +39,15 @@ spec:
             namespace: krateo-system
             values:
               postgresql:
-                  volumePermissions:
+                volumePermissions:
+                  enabled: false
+                  securityContext:
+                    runAsUser: "auto"
+                primary:
+                  containerSecurityContext:
                     enabled: false
-                    securityContext:
-                      runAsUser: "auto"
-                  primary:
-                    containerSecurityContext:
-                      enabled: false
-                    podSecurityContext:
-                      enabled: false
+                  podSecurityContext:
+                    enabled: false
       patches:
         - fromFieldPath: spec.kongapigw.version
           toFieldPath: spec.forProvider.chart.version

@@ -701,24 +701,26 @@ spec:
             - type: string
               string:
                 fmt: "%s-kongapigw"
-        - fromFieldPath: spec.kongapigw.version
-          toFieldPath: spec.forProvider.chart.version
-        - fromFieldPath: spec.kongapigw.postgresql.enabled
-          toFieldPath: spec.forProvider.values.postgresql.enabled
-        - fromFieldPath: spec.kongapigw.admin.enabled
-          toFieldPath: spec.forProvider.values.admin.enabled
-        - fromFieldPath: spec.kongapigw.admin.http.enabled
-          toFieldPath: spec.forProvider.values.admin.http.enabled
-        - fromFieldPath: spec.kongapigw.admin.https.enabled
-          toFieldPath: spec.forProvider.values.admin.https.enabled
-        - fromFieldPath: spec.kongapigw.admin.type
-          toFieldPath: spec.forProvider.values.admin.type
-        - fromFieldPath: spec.kongapigw.proxy.http.nodePort
-          toFieldPath: spec.forProvider.values.proxy.http.nodePort
-        - fromFieldPath: spec.kongapigw.proxy.https.nodePort
-          toFieldPath: spec.forProvider.values.proxy.https.nodePort
-        - fromFieldPath: spec.kongapigw.proxy.type
-          toFieldPath: spec.forProvider.values.proxy.type
+        - fromFieldPath: spec.kongapigw
+          toFieldPath: spec.kongapigw
+        # - fromFieldPath: spec.kongapigw.version
+        #   toFieldPath: spec.kongapigw.version
+        # - fromFieldPath: spec.kongapigw.postgresql.enabled
+        #   toFieldPath: spec.forProvider.values.postgresql.enabled
+        # - fromFieldPath: spec.kongapigw.admin.enabled
+        #   toFieldPath: spec.forProvider.values.admin.enabled
+        # - fromFieldPath: spec.kongapigw.admin.http.enabled
+        #   toFieldPath: spec.forProvider.values.admin.http.enabled
+        # - fromFieldPath: spec.kongapigw.admin.https.enabled
+        #   toFieldPath: spec.forProvider.values.admin.https.enabled
+        # - fromFieldPath: spec.kongapigw.admin.type
+        #   toFieldPath: spec.forProvider.values.admin.type
+        # - fromFieldPath: spec.kongapigw.proxy.http.nodePort
+        #   toFieldPath: spec.forProvider.values.proxy.http.nodePort
+        # - fromFieldPath: spec.kongapigw.proxy.https.nodePort
+        #   toFieldPath: spec.forProvider.values.proxy.https.nodePort
+        # - fromFieldPath: spec.kongapigw.proxy.type
+        #   toFieldPath: spec.forProvider.values.proxy.type
         - fromFieldPath: metadata.labels
           toFieldPath: metadata.labels
         - fromFieldPath: spec.platform
