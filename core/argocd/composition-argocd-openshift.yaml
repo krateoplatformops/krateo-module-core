@@ -6,7 +6,7 @@ metadata:
     platform: openshift
 spec:
   compositeTypeRef:
-    apiVersion: core.modules.krateo.io/v1alpha1
+    apiVersion: core.modules.krateo.io/v1
     kind: argo-cd
   resources:
     - base:
