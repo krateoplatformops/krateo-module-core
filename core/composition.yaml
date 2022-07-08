@@ -50,7 +50,7 @@ spec:
         - fromFieldPath: metadata.labels
           toFieldPath: metadata.labels
         - fromFieldPath: spec.platform
-          toFieldPath: metadata.labels[platform]
+          toFieldPath: spec.compositionSelector.matchLabels.platform
         - fromFieldPath: spec.namespace
           toFieldPath: spec.namespace
     - base:
