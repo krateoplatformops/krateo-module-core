@@ -4,7 +4,6 @@ kind: Composition
 metadata:
   name: core.modules.krateo.io
 spec:
-  writeConnectionSecretsToNamespace: krateo-system
   compositeTypeRef:
     apiVersion: modules.krateo.io/v1
     kind: Core
