@@ -672,6 +672,8 @@ spec:
           toFieldPath: spec.forProvider.values.ingress
         - fromFieldPath: spec.api.cookie.secure
           toFieldPath: spec.forProvider.values.cookie.secure
+        - fromFieldPath: spec.api.cookie.signed
+          toFieldPath: spec.forProvider.values.cookie.signed
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.namespace
     - base:

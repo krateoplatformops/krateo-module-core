@@ -161,6 +161,9 @@ spec:
                         secure:
                           description: api cookie secure value
                           type: string
+                        signed:
+                          description: api cookie signed value
+                          type: string
                   required:
                   - hostname
                 app:
