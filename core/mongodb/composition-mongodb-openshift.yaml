@@ -35,8 +35,7 @@ spec:
             chart:
               name: mongodb
               repository: https://charts.bitnami.com/bitnami
-              version: 12.1.21
-              url: https://github.com/krateoplatformops/helm-charts/blob/gh-pages/mongodb-12.1.26.tgz
+              version: 12.1.26
             namespace: krateo-system
             values:
               auth:
