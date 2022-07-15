@@ -740,7 +740,7 @@ spec:
         kind: mongodb
         spec:
           mongodb:
-            version: 12.1.25
+            version: 12.1.26
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name
