@@ -28,7 +28,7 @@ spec:
         kind: argo-cd
         spec:
           argo-cd:
-            version: 4.9.11
+            version: 4.9.14
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name
@@ -63,7 +63,7 @@ spec:
             chart:
               name: dashboard-common-chart
               repository: https://charts.krateo.io
-              version: 1.0.2
+              version: 1.0.3
             namespace: krateo-system
             values:
               services:
@@ -81,6 +81,7 @@ spec:
                   pipeline: "http://pipeline-service-service.krateo-system.svc"
                   secret: "http://secret-service-service.krateo-system.svc"
                   provider: "http://provider-service-service.krateo-system.svc"
+                  capi: "http://capi-service-service.krateo-system.svc"
                   keptn: ""
             set:
               - name: mongodb.password
@@ -186,6 +187,12 @@ spec:
             - type: string
               string:
                 fmt: "http://provider-service-service.%s.svc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.values.services.hosts.capi
+          transforms:
+            - type: string
+              string:
+                fmt: "http://capi-service-service.%s.svc"
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
@@ -197,7 +204,7 @@ spec:
             chart:
               name: app
               repository: https://charts.krateo.io
-              version: 1.0.16
+              version: 1.0.17
             namespace: krateo-system
             values:
               fullnameOverride: app
@@ -322,7 +329,7 @@ spec:
             chart:
               name: deployment-service
               repository: https://charts.krateo.io
-              version: 1.0.13
+              version: 1.0.15
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.deployment-service.version
@@ -694,7 +701,7 @@ spec:
         kind: kongapigw
         spec:
           kongapigw:
-            version: 2.10.2
+            version: 2.11.0
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name
@@ -733,7 +740,7 @@ spec:
         kind: mongodb
         spec:
           mongodb:
-            version: 12.1.24
+            version: 12.1.25
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name
@@ -771,6 +778,36 @@ spec:
             - type: string
               string:
                 fmt: "%s-release-provider-service"
+        - fromFieldPath: metadata.name
+          toFieldPath: spec.providerConfigRef.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-helm-pc-in"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.forProvider.namespace
+    - base:
+        apiVersion: helm.crossplane.io/v1beta1
+        kind: Release
+        metadata:
+          annotations:
+            crossplane.io/external-name: capi-service
+        spec:
+          forProvider:
+            chart:
+              name: capi-service
+              repository: https://charts.krateo.io
+              version: 1.0.5
+            namespace: krateo-system
+      patches:
+        - fromFieldPath: spec.capi-service.version
+          toFieldPath: spec.forProvider.chart.version
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-release-capi-service"
         - fromFieldPath: metadata.name
           toFieldPath: spec.providerConfigRef.name
           transforms:
