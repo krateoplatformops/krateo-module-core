@@ -34,7 +34,7 @@ spec:
           forProvider:
             chart:
               name: mongodb
-              repository: https://charts.krateo.io
+              repository: https://charts.bitnami.com/bitnami
               version: 12.1.26
             namespace: krateo-system
             values:
