@@ -53,10 +53,6 @@ spec:
               shmVolume:
                 chmod:
                   enabled: false
-              readinessProbe:
-                enabled: false
-              livenessProbe:
-                enabled: false
       patches:
         - fromFieldPath: spec.mongodb.version
           toFieldPath: spec.forProvider.chart.version
