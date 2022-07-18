@@ -53,15 +53,16 @@ spec:
               shmVolume:
                 chmod:
                   enabled: false
-              livenessProbe:
-                enabled: false
-              readinessProbe:
-                enabled: false
-              arbiter:
-                livenessProbe:
-                  enabled: false
-                readinessProbe:
-                  enabled: false
+              customLivenessProbe:
+                exec:
+                  command:
+                    - cat
+                    - /bitnami/scripts/ping-mongodb.sh
+              customReadinessProbe:
+                exec:
+                  command:
+                    - cat
+                    - /bitnami/scripts/readiness-probe.sh
       patches:
         - fromFieldPath: spec.mongodb.version
           toFieldPath: spec.forProvider.chart.version
