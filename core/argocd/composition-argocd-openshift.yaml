@@ -146,7 +146,7 @@ spec:
               string:
                 fmt: "%s-provider-argocd-cc"
     - base:
-        apiVersion: argocd.krateoplatformops.io/v1alpha1
+        apiVersion: argocd.krateo.io/v1alpha1
         kind: ProviderConfig
         spec:
           serverUrl: http://krateo-argocd-server.krateo-system.svc:80
@@ -167,7 +167,7 @@ spec:
         - fromFieldPath: spec.namespace
           toFieldPath: spec.credentials.secretRef.namespace
     - base:
-        apiVersion: argocd.krateoplatformops.io/v1alpha1
+        apiVersion: argocd.krateo.io/v1alpha1
         kind: Token
         metadata:
           name: krateo-dashboard-argocd-token

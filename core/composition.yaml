@@ -767,7 +767,7 @@ spec:
             chart:
               name: provider-service
               repository: https://charts.krateo.io
-              version: 1.0.0
+              version: 1.0.1
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.provider-service.version
