@@ -389,7 +389,7 @@ spec:
             chart:
               name: git-service
               repository: https://charts.krateo.io
-              version: 1.0.2
+              version: 1.0.3
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.git-service.version
