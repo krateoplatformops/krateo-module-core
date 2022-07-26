@@ -329,7 +329,7 @@ spec:
             chart:
               name: deployment-service
               repository: https://charts.krateo.io
-              version: 1.0.16
+              version: 1.0.17
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.deployment-service.version
