@@ -204,7 +204,7 @@ spec:
             chart:
               name: app
               repository: https://charts.krateo.io
-              version: 1.0.17
+              version: 1.1.1
             namespace: krateo-system
             values:
               fullnameOverride: app
@@ -329,7 +329,7 @@ spec:
             chart:
               name: deployment-service
               repository: https://charts.krateo.io
-              version: 1.0.15
+              version: 1.0.18
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.deployment-service.version
@@ -518,7 +518,7 @@ spec:
             chart:
               name: template-service
               repository: https://charts.krateo.io
-              version: 1.0.1
+              version: 1.0.2
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.template-service.version
@@ -638,7 +638,7 @@ spec:
             chart:
               name: api
               repository: https://charts.krateo.io
-              version: 1.0.0
+              version: 1.0.1
             namespace: krateo-system
             values:
               podEnv:
