@@ -13,6 +13,600 @@ spec:
     plural: core
     singular: core
   versions:
+    - name: v1alpha1
+      referenceable: true
+      schema:
+        openAPIV3Schema:
+          description: Core module of Krateo PlatformOps
+          properties:
+            spec:
+              properties:
+                auth:
+                  description: Authentication methods
+                  type: object
+                  properties:
+                    session:
+                      description: Krateo dashboard session secret
+                      type: object
+                      properties:
+                        secret:
+                          description: Session Secret
+                          type: string
+                    github:
+                      description: Krateo dashboard GitHub providers
+                      type: object
+                      properties:
+                        clientId:
+                          description: Krateo dashboard GitHub provider clientId
+                          type: string
+                        clientSecret:
+                          description: Krateo dashboard GitHub provider clientSecret
+                          type: string
+                        token:
+                          description: Krateo dashboard GitHub provider token
+                          type: string
+                    oidc:
+                      description: Krateo dashboard oidc providers
+                      type: object
+                      properties:
+                        metadataUrl:
+                          description: Krateo dashboard Oidc metadataUrl
+                          type: string
+                        clientId:
+                          description: Krateo dashboard Oidc clientId
+                          type: string
+                        clientSecret:
+                          description: Krateo dashboard Oidc clientSecret
+                          type: string
+                        authorizationUrl:
+                          description: Krateo dashboard Oidc authorizationUrl
+                          type: string
+                        tokenUrl:
+                          description: Krateo dashboard Oidc tokenUrl
+                          type: string
+                        tokenSignedResponseAlg:
+                          description: Krateo dashboard Oidc tokenSignedResponseAlg
+                          type: string
+                        scope:
+                          description: Krateo dashboard Oidc scope
+                          type: string
+                        prompt:
+                          description: Krateo dashboard Oidc prompt
+                          type: string
+                ingress:
+                  description: Ingress definition
+                  type: object
+                  properties:
+                    enabled:
+                      description: Ingress enabled
+                      type: boolean
+                      default: false
+                    tls:
+                      description: Ingress tls configuration
+                      type: object
+                      properties:
+                        enabled:
+                          description: Ingress tls enabled
+                          type: boolean
+                          default: false
+                    annotations:
+                      description: Ingress annotation
+                      type: object
+                      properties:
+                        kubernetes.io/ingress.class:
+                          description: Ingress class
+                          type: string
+                        kubernetes.io/tls-acme:
+                          description: Ingress tls
+                          type: string
+                        ingress.kubernetes.io/force-ssl-redirect:
+                          description: Ingress force-ssl-redirect
+                          type: string
+                lighthouse:
+                  description: tool for improving the performance, quality, and correctness of your web apps
+                  type: object
+                  properties:
+                    enabled:
+                      description: lighthouse enabled boolean condition
+                      type: boolean
+                      default: false
+                backendUrl:
+                  description: Kerberus Dashboard backend url
+                  type: string
+                frontendUrl:
+                  description: Kerberus Dashboard frontend url
+                  type: string
+                frontend:
+                  description: Kerberus Dashboard frontend
+                  type: object
+                  properties:
+                    service:
+                      description: Kubernetes service for Kerberus Dashboard frontend
+                      type: object
+                      properties:
+                        type:
+                          description: Kubernetes service type for Kerberus Dashboard frontend
+                          type: string
+                          default: ClusterIP
+                backend:
+                  description: Kerberus Dashboard backend
+                  type: object
+                  properties:
+                    service:
+                      description: Kubernetes service for Kerberus Dashboard backend
+                      type: object
+                      properties:
+                        type:
+                          description: Kubernetes service type for Kerberus Dashboard backend
+                          type: string
+                          default: ClusterIP
+                grafana:
+                  description: Grafana values
+                  type: object
+                  properties:
+                    target:
+                      description: Grafana target url
+                      type: string
+                    token:
+                      description: Grafana token
+                      type: string
+                kubernetes:
+                  description: Kubernetes values
+                  type: object
+                  properties:
+                    clusters:
+                      description: Kubernetes clusters visible from Krateo dashboard
+                      type: array
+                      items:
+                        description: Kubernetes cluster visible from Krateo dashboard
+                        type: object
+                        properties:
+                          url:
+                            description: Kubernetes cluster url
+                            type: string
+                          name:
+                            description: Kubernetes cluster name
+                            type: string
+                          authProvider:
+                            description: Kubernetes cluster authProvider
+                            type: string
+                          skipTLSVerify:
+                            description: Kubernetes cluster skipTLSVerify
+                            type: boolean
+                          serviceAccountToken:
+                            description: Kubernetes cluster serviceAccountToken
+                            type: string
+                    customResources:
+                      description: customResources defined for Kubernetes plugin
+                      type: array
+                      items:
+                        description: customResource for Kubernetes plugin
+                        type: object
+                        properties:
+                          apiVersion:
+                            description: customResource apiVersion
+                            type: string
+                          group:
+                            description: customResource group
+                            type: string
+                          plural:
+                            description: customResource plural
+                            type: string
+                  # properties:
+                  #   clusterLocatorMethods:
+                  #     type: array
+                #       items:
+                #         description: clusterLocatorMethods array
+                #         type: object
+                #         properties:
+                #           type:
+                #             description: type config for clusterLocatorMethods
+                #             properties: string
+                #           clusters:
+                #             description: Kubernetes clusters visible from Krateo dashboard
+                #             type: array
+                #             items:
+                #               description: Kubernetes cluster visible from Krateo dashboard
+                #               type: object
+                #               properties:
+                #                 url:
+                #                   description: Kubernetes cluster url
+                #                   type: string
+                #                 name:
+                #                   description: Kubernetes cluster name
+                #                   type: string
+                #                 authProvider:
+                #                   description: Kubernetes cluster authProvider
+                #                   type: string
+                #                 skipTLSVerify:
+                #                   description: Kubernetes cluster skipTLSVerify
+                #                   type: boolean
+                #                 # skipMetricsLookup:
+                #                 #   description: Kubernetes cluster skipMetricsLookup
+                #                 #   type: boolean
+                #                 serviceAccountToken:
+                #                   description: Kubernetes cluster serviceAccountToken
+                #                   type: string
+                #                 # caData:
+                #                 #   description: Kubernetes cluster caData
+                #                 #   type: string
+                #     customResources:
+                #       description: customResources defined for Kubernetes plugin
+                #       type: array
+                #       items:
+                #         description: customResource for Kubernetes plugin
+                #         type: object
+                #         properties:
+                #           apiVersion:
+                #             description: customResource apiVersion
+                #             type: string
+                #           group:
+                #             description: customResource group
+                #             type: string
+                #           plural:
+                #             description: customResource plural
+                #             type: string
+                organization:
+                  description: Organization
+                  type: string
+                prometheus:
+                  description: Prometheus values
+                  type: object
+                  properties:
+                    target:
+                      description: Prometheus target
+                      type: string
+                    token:
+                      description: Prometheus token
+                      type: string
+                providers:
+                  description: Krateo dashboard providers
+                  type: object
+                  properties:
+                    github:
+                      description: Krateo dashboard GitHub providers
+                      type: object
+                      properties:
+                        clientId:
+                          description: Krateo dashboard GitHub provider clientId
+                          type: string
+                        clientSecret:
+                          description: Krateo dashboard GitHub provider clientSecret
+                          type: string
+                        token:
+                          description: Krateo dashboard GitHub provider token
+                          type: string
+                        enterprise:
+                          description: Krateo dashboard GitHub provider enterprise
+                          type: object
+                          properties:
+                            enabled:
+                              description: Krateo dashboard GitHub provider enterprise enabled
+                              type: boolean
+                            url:
+                              description: Krateo dashboard GitHub provider enterprise url
+                              type: string
+                sonarqube:
+                  description: SonarQube values
+                  type: object
+                  properties:
+                    token:
+                      description: SonarQube token
+                      type: string
+                    target:
+                      description: SonarQube target
+                      type: string
+                ldap:
+                  description: ldap values
+                  type: object
+                  properties:
+                    enabled:
+                      description: ldap enabled
+                      type: boolean
+                    secret:
+                      description: ldap secret
+                      type: string
+                    target:
+                      description: ldap target
+                      type: string
+                    bind:
+                      description: ldap bind
+                      type: object
+                      properties:
+                        dn:
+                          description: ldap bind dn
+                          type: string
+                        secret:
+                          description: ldap bind secret
+                          type: string
+                    users:
+                      description: ldap users
+                      type: object
+                      properties:
+                        dn:
+                          description: ldap users dn
+                          type: string
+                        options:
+                          description: ldap users
+                          type: object
+                          properties:
+                            filter:
+                              description: ldap users filter
+                              type: string
+                            scope:
+                              description: ldap users scope
+                              type: string
+                    groups:
+                      description: ldap groups
+                      type: object
+                      properties:
+                        dn:
+                          description: ldap users dn
+                          type: string
+                        options:
+                          description: ldap users
+                          type: object
+                          properties:
+                            filter:
+                              description: ldap groups filter
+                              type: string
+                            scope:
+                              description: ldap groups scope
+                              type: string
+                argo-cd:
+                  description: Argo-cd helm chart values
+                  type: object
+                  properties:
+                    version:
+                      description: argo-cd helm chart version
+                      type: string
+                      default: 3.29.4
+                    redis:
+                      description: Argo-cd helm chart redis values
+                      type: object
+                      properties:
+                        securityContext:
+                          description: Argo-cd helm chart redis securityContext values
+                          type: object
+                          # properties:
+                          #   runAsUser:
+                          #     description: Argo-cd helm chart redis securityContext runAsUser value
+                          #     type: object
+                          #   runAsNonRoot:
+                          #     description: Argo-cd helm chart redis securityContext runAsNonRoot value
+                          #     type: object
+                krateo-dashboard:
+                  description: krateo-dashboard helm chart values
+                  type: object
+                  properties:
+                    jenkins:
+                      description: Jenkins values
+                      type: object
+                      properties:
+                        instances:
+                          description: Jenkins instances
+                          type: array
+                          items:
+                            description: Jenkins node
+                            type: object
+                            properties:
+                              name:
+                                description: node name
+                                type: string
+                              baseUrl:
+                                description: node url
+                                type: string
+                              username:
+                                description: node username
+                                type: string
+                              apiKey:
+                                description: node apiKey
+                                type: string
+                    frontend:
+                      description: krateo-dashboard frontend image values
+                      type: object
+                      properties:
+                        image:
+                          description: krateo-dashboard frontend image values
+                          type: object
+                          properties:
+                            repository:
+                              description: krateo-dashboard frontend image repository
+                              type: string
+                            tag:
+                              description: krateo-dashboard frontend image tag
+                              type: string
+                            pullPolicy:
+                              description: krateo-dashboard frontend image pullPolicy
+                              type: string
+                    backend:
+                      description: krateo-dashboard backend image values
+                      type: object
+                      properties:
+                        image:
+                          description: krateo-dashboard backend image values
+                          type: object
+                          properties:
+                            repository:
+                              description: krateo-dashboard backend image repository
+                              type: string
+                            tag:
+                              description: krateo-dashboard backend image tag
+                              type: string
+                            pullPolicy:
+                              description: krateo-dashboard backend image pullPolicy
+                              type: string
+                    version:
+                      description: krateo-dashboard helm chart version
+                      type: string
+                      default: 0.3.131
+                    # keptn:
+                    #   description: Keptn values
+                    #   type: object
+                    #   properties:
+                    #     bridge:
+                    #       description: Keptn bridge url
+                    #       type: string
+                    #     bridgeToken:
+                    #       description: Keptn bridge token
+                    #       type: string
+                    #     api:
+                    #       description: Keptn api url
+                    #       type: string
+                    #     apiToken:
+                    #       description: Keptn api token
+                    #       type: string
+                    postgresql:
+                      description: postgresql for krateo-dashboard-backend helm chart values
+                      type: object
+                      properties:
+                        persistence:
+                          description: persistent fields for PostgreSql
+                          type: object
+                          properties:
+                            enabled:
+                              description: Enable persistence using PVC
+                              type: boolean
+                            existingClaim:
+                              description: Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template. If defined, PVC must be created manually before volume will be bound. The value is evaluated as a template, so, for example, the name can depend on .Release or .Chart
+                              type: string
+                            mountPath:
+                              description: The path the volume will be mounted at, useful when using different PostgreSQL images.
+                              type: string
+                            subPath:
+                              description: The subdirectory of the volume to mount to. Useful in dev environments and one PV for multiple services.
+                              type: string
+                            storageClass:
+                              description: PVC Storage Class for PostgreSQL volume.
+                              type: string
+                            # accessModes:
+                            #   description: PVC Access Mode for PostgreSQL volume
+                            #   type: array
+                            snapshotName:
+                              description: Provide a VolumeSnapshot name which to create the PVC. The same snapshot will be used for the primary and any read replicas.
+                              type: string
+                            size:
+                              description: PVC Storage Request for PostgreSQL volume
+                              type: string
+                            annotations:
+                              description: Annotations for the PVC
+                              type: object
+                            selector:
+                              description: Selector to match an existing Persistent Volume (this value is evaluated as a template).
+                              type: object
+                        volumePermissions:
+                          description: Change the owner of the persist volume mountpoint to RunAsUser:fsGroup
+                          type: object
+                          properties:
+                            enabled:
+                              description: Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)
+                              type: boolean
+                            securityContext:
+                              description: Init container Security Context
+                              type: object
+                              properties:
+                                runAsUser:
+                                  description: using `auto` is especially useful for OpenShift which has scc with dynamic userids (and 0 is not allowed).
+                                  type: string
+                        shmVolume:
+                          description: shmVolume configuration
+                          type: object
+                          properties:
+                            enabled:
+                              description: Enable emptyDir volume for /dev/shm for primary and read replica(s) Pod(s). Set `shmVolume.enabled` to `true` to mount a new tmpfs volume to remove the above limitation.
+                              type: boolean
+                            chmod:
+                              description: shmVolume.chmod configuration
+                              type: object
+                              properties:
+                                enabled:
+                                  description: Set to `true` to `chmod 777 /dev/shm` on a initContainer (ignored if `volumePermissions.enabled` is `false`)
+                                  type: boolean
+                        securityContext:
+                          description: postgresql for krateo-dashboard-backend helm chart securityContext values
+                          type: object
+                          properties:
+                            enabled:
+                              description: postgresql for krateo-dashboard-backend helm chart securityContext enabled values
+                              type: boolean
+                        containerSecurityContext:
+                          description: postgresql for krateo-dashboard-backend helm chart containerSecurityContext values
+                          type: object
+                          properties:
+                            enabled:
+                              description: postgresql for krateo-dashboard-backend helm chart containerSecurityContext enabled values
+                              type: boolean
+                keptn:
+                  description: Keptn values
+                  type: object
+                  properties:
+                    ingress:
+                      description: Keptn ingress values
+                      type: object
+                      properties:
+                        tls:
+                          description: Keptn ingress tls values
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              secretName:
+                                description: Keptn ingress tls secretName
+                                type: string
+                              hosts:
+                                description: Keptn ingress tls hosts
+                                type: array
+                                items:
+                                  type: string
+                        rules:
+                          description: Keptn ingress rules
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              host:
+                                description: Keptn ingress rule host
+                                type: string
+                              http:
+                                description: Keptn ingress rule http
+                                type: object
+                                properties:
+                                  paths:
+                                    description: Keptn ingress rule paths
+                                    type: array
+                                    items:
+                                      type: object
+                                      properties:
+                                        path:
+                                          description: Keptn ingress rule paths
+                                          type: string
+                                        pathType:
+                                          description: Keptn ingress rule pathType
+                                          type: string
+                                        backend:
+                                          description: Keptn ingress rule backend
+                                          type: object
+                                          properties:
+                                            service:
+                                              description: Keptn ingress rule backend service
+                                              type: object
+                                              properties:
+                                                name:
+                                                  description: Keptn ingress rule backend service name
+                                                  type: string
+                                                port:
+                                                  description: Keptn ingress rule backend service port
+                                                  type: object
+                                                  properties:
+                                                    number:
+                                                      description: Keptn ingress rule backend service port number
+                                                      type: integer
+      #              type: object
+      #          type: object
+      #          required:
+      #            - frontendUrl
+      #            - backendUrl
+      served: true
     - name: v1
       referenceable: true
       served: true
