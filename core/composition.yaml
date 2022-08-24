@@ -24,7 +24,7 @@ spec:
       readinessChecks:
         - type: None
     - base:
-        apiVersion: core.modules.krateo.io/v1
+        Version: core.modules.krateo.io/v1
         kind: argo-cd
         spec:
           argo-cd:
@@ -329,7 +329,7 @@ spec:
             chart:
               name: deployment-service
               repository: https://charts.krateo.io
-              version: 1.0.18
+              version: 1.1.2
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.deployment-service.version
@@ -638,7 +638,7 @@ spec:
             chart:
               name: api
               repository: https://charts.krateo.io
-              version: 1.0.1
+              version: 1.0.3
             namespace: krateo-system
             values:
               podEnv:
