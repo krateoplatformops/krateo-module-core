@@ -24,7 +24,7 @@ spec:
       readinessChecks:
         - type: None
     - base:
-        Version: core.modules.krateo.io/v1
+        apiVersion: core.modules.krateo.io/v1
         kind: argo-cd
         spec:
           argo-cd:
