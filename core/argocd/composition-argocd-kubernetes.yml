@@ -162,34 +162,34 @@ spec:
             - type: string
               string:
                 fmt: "http://argocd-server.%s.svc:80"
-    - base:
-        apiVersion: argocd.krateo.io/v1alpha1
-        kind: Token
-        spec:
-          forProvider:
-            account: krateo-dashboard
-            writeTokenSecretToRef:
-              name: krateo-dashboard-argocd-token
-              key: authToken
-              namespace: krateo-system
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-argocd-token"
-        - fromFieldPath: metadata.name
-          toFieldPath: spec.providerConfigRef.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-pc"
-        - fromFieldPath: metadata.name
-          toFieldPath: spec.controllerConfigRef.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-cc"
-        - fromFieldPath: spec.namespace
-          toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
+    # - base:
+    #     apiVersion: argocd.krateo.io/v1alpha1
+    #     kind: Token
+    #     spec:
+    #       forProvider:
+    #         account: krateo-dashboard
+    #         writeTokenSecretToRef:
+    #           name: krateo-dashboard-argocd-token
+    #           key: authToken
+    #           namespace: krateo-system
+    #   patches:
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: metadata.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-argocd-token"
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: spec.providerConfigRef.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-pc"
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: spec.controllerConfigRef.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-cc"
+    #     - fromFieldPath: spec.namespace
+    #       toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
