@@ -113,28 +113,28 @@ spec:
           toFieldPath: spec.forProvider.values.ingress.hosts[0]
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.namespace
-    - base:
-        apiVersion: pkg.crossplane.io/v1alpha1
-        kind: ControllerConfig
-        spec:
-          args:
-            - --debug
-          securityContext: {}
-          podSecurityContext: {}
-          resources:
-            limits:
-              cpu: 100m
-              memory: 128Mi
-            requests:
-              cpu: 50m
-              memory: 64Mi
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-cc"
+    # - base:
+    #     apiVersion: pkg.crossplane.io/v1alpha1
+    #     kind: ControllerConfig
+    #     spec:
+    #       args:
+    #         - --debug
+    #       securityContext: {}
+    #       podSecurityContext: {}
+    #       resources:
+    #         limits:
+    #           cpu: 100m
+    #           memory: 128Mi
+    #         requests:
+    #           cpu: 50m
+    #           memory: 64Mi
+    #   patches:
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: metadata.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-cc"
     # - base:
     #     apiVersion: argocd.krateo.io/v1alpha1
     #     kind: ProviderConfig
