@@ -137,35 +137,35 @@ spec:
                 fmt: "%s-provider-argocd-cc"
       readinessChecks:
         - type: None
-    # - base:
-    #     apiVersion: argocd.krateo.io/v1alpha1
-    #     kind: ProviderConfig
-    #     spec:
-    #       serverUrl: http://argocd-server.krateo-system.svc:80
-    #       credentials:
-    #         source: Secret
-    #         secretRef:
-    #           namespace: krateo-system
-    #           name: argocd-initial-admin-secret
-    #           key: password
-    #       debugClient: true
-    #   patches:
-    #     - fromFieldPath: metadata.name
-    #       toFieldPath: metadata.name
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-provider-argocd-pc"
-    #     - fromFieldPath: spec.namespace
-    #       toFieldPath: spec.credentials.secretRef.namespace
-    #     - fromFieldPath: spec.namespace
-    #       toFieldPath: spec.serverUrl
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "http://argocd-server.%s.svc:80"
-    #   readinessChecks:
-    #     - type: None
+    - base:
+        apiVersion: argocd.krateo.io/v1alpha1
+        kind: ProviderConfig
+        spec:
+          serverUrl: http://argocd-server.krateo-system.svc:80
+          credentials:
+            source: Secret
+            secretRef:
+              namespace: krateo-system
+              name: argocd-initial-admin-secret
+              key: password
+          debugClient: true
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-provider-argocd-pc"
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.credentials.secretRef.namespace
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.serverUrl
+          transforms:
+            - type: string
+              string:
+                fmt: "http://argocd-server.%s.svc:80"
+      readinessChecks:
+        - type: None
     # - base:
     #     apiVersion: argocd.krateo.io/v1alpha1
     #     kind: Token
