@@ -135,8 +135,8 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-argocd-cc"
-      # readinessChecks:
-      #   - type: None
+      readinessChecks:
+        - type: None
     # - base:
     #     apiVersion: argocd.krateo.io/v1alpha1
     #     kind: ProviderConfig
