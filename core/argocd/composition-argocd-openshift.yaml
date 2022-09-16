@@ -166,6 +166,8 @@ spec:
                 fmt: "%s-provider-argocd-pc"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.credentials.secretRef.namespace
+      readinessChecks:
+        - type: None
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: Token

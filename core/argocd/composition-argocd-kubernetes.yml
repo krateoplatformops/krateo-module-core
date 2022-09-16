@@ -162,6 +162,8 @@ spec:
             - type: string
               string:
                 fmt: "http://argocd-server.%s.svc:80"
+      readinessChecks:
+        - type: None
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: Token
