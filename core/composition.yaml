@@ -717,27 +717,27 @@ spec:
     #       toFieldPath: spec.compositionSelector.matchLabels.platform
     #     - fromFieldPath: spec.namespace
     #       toFieldPath: spec.namespace
-    # - base:
-    #     apiVersion: core.modules.krateo.io/v1
-    #     kind: mongodb
-    #     spec:
-    #       mongodb:
-    #         version: 12.1.26
-    #   patches:
-    #     - fromFieldPath: metadata.name
-    #       toFieldPath: metadata.name
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-mongodb"
-    #     - fromFieldPath: spec.mongodb.version
-    #       toFieldPath: spec.mongodb.version
-    #     - fromFieldPath: metadata.labels
-    #       toFieldPath: metadata.labels
-    #     - fromFieldPath: spec.platform
-    #       toFieldPath: spec.compositionSelector.matchLabels.platform
-    #     - fromFieldPath: spec.namespace
-    #       toFieldPath: spec.namespace
+    - base:
+        apiVersion: core.modules.krateo.io/v1
+        kind: mongodb
+        spec:
+          mongodb:
+            version: 12.1.26
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-mongodb"
+        - fromFieldPath: spec.mongodb.version
+          toFieldPath: spec.mongodb.version
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: spec.platform
+          toFieldPath: spec.compositionSelector.matchLabels.platform
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.namespace
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
