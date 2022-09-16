@@ -23,35 +23,35 @@ spec:
                 fmt: "%s-provider-helm-pc-in"
       readinessChecks:
         - type: None
-    # - base:
-    #     apiVersion: core.modules.krateo.io/v1
-    #     kind: argo-cd
-    #     spec:
-    #       argo-cd:
-    #         version: 4.9.14
-    #   patches:
-    #     - fromFieldPath: metadata.name
-    #       toFieldPath: metadata.name
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-argocd"
-    #     - fromFieldPath: spec.protocol
-    #       toFieldPath: spec.protocol
-    #     - fromFieldPath: spec.domain
-    #       toFieldPath: spec.domain
-    #     - fromFieldPath: spec.argo-cd.version
-    #       toFieldPath: spec.argo-cd.version
-    #     - fromFieldPath: spec.argo-cd.hostname
-    #       toFieldPath: spec.argo-cd.hostname
-    #     - fromFieldPath: spec.argo-cd.service.http.port
-    #       toFieldPath: spec.argo-cd.service.http.port
-    #     - fromFieldPath: metadata.labels
-    #       toFieldPath: metadata.labels
-    #     - fromFieldPath: spec.platform
-    #       toFieldPath: spec.compositionSelector.matchLabels.platform
-    #     - fromFieldPath: spec.namespace
-    #       toFieldPath: spec.namespace
+    - base:
+        apiVersion: core.modules.krateo.io/v1
+        kind: argo-cd
+        spec:
+          argo-cd:
+            version: 4.9.14
+      patches:
+        - fromFieldPath: metadata.name
+          toFieldPath: metadata.name
+          transforms:
+            - type: string
+              string:
+                fmt: "%s-argocd"
+        - fromFieldPath: spec.protocol
+          toFieldPath: spec.protocol
+        - fromFieldPath: spec.domain
+          toFieldPath: spec.domain
+        - fromFieldPath: spec.argo-cd.version
+          toFieldPath: spec.argo-cd.version
+        - fromFieldPath: spec.argo-cd.hostname
+          toFieldPath: spec.argo-cd.hostname
+        - fromFieldPath: spec.argo-cd.service.http.port
+          toFieldPath: spec.argo-cd.service.http.port
+        - fromFieldPath: metadata.labels
+          toFieldPath: metadata.labels
+        - fromFieldPath: spec.platform
+          toFieldPath: spec.compositionSelector.matchLabels.platform
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.namespace
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release

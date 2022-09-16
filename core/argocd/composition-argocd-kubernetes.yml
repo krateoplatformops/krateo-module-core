@@ -113,87 +113,87 @@ spec:
           toFieldPath: spec.forProvider.values.ingress.hosts[0]
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.namespace
-    - base:
-        apiVersion: pkg.crossplane.io/v1alpha1
-        kind: ControllerConfig
-        spec:
-          args:
-            - --debug
-          securityContext: {}
-          podSecurityContext: {}
-          resources:
-            limits:
-              cpu: 100m
-              memory: 128Mi
-            requests:
-              cpu: 50m
-              memory: 64Mi
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-cc"
-      readinessChecks:
-        - type: None
-    - base:
-        apiVersion: argocd.krateo.io/v1alpha1
-        kind: ProviderConfig
-        spec:
-          serverUrl: http://argocd-server.krateo-system.svc:80
-          credentials:
-            source: Secret
-            secretRef:
-              namespace: krateo-system
-              name: argocd-initial-admin-secret
-              key: password
-          debugClient: true
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-pc"
-        - fromFieldPath: spec.namespace
-          toFieldPath: spec.credentials.secretRef.namespace
-        - fromFieldPath: spec.namespace
-          toFieldPath: spec.serverUrl
-          transforms:
-            - type: string
-              string:
-                fmt: "http://argocd-server.%s.svc:80"
-      readinessChecks:
-        - type: None
-    - base:
-        apiVersion: argocd.krateo.io/v1alpha1
-        kind: Token
-        spec:
-          forProvider:
-            account: krateo-dashboard
-            writeTokenSecretToRef:
-              name: krateo-dashboard-argocd-token
-              key: authToken
-              namespace: krateo-system
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-argocd-token"
-        - fromFieldPath: metadata.name
-          toFieldPath: spec.providerConfigRef.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-pc"
-        - fromFieldPath: metadata.name
-          toFieldPath: spec.controllerConfigRef.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-argocd-cc"
-        - fromFieldPath: spec.namespace
-          toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
+    # - base:
+    #     apiVersion: pkg.crossplane.io/v1alpha1
+    #     kind: ControllerConfig
+    #     spec:
+    #       args:
+    #         - --debug
+    #       securityContext: {}
+    #       podSecurityContext: {}
+    #       resources:
+    #         limits:
+    #           cpu: 100m
+    #           memory: 128Mi
+    #         requests:
+    #           cpu: 50m
+    #           memory: 64Mi
+    #   patches:
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: metadata.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-cc"
+    #   readinessChecks:
+    #     - type: None
+    # - base:
+    #     apiVersion: argocd.krateo.io/v1alpha1
+    #     kind: ProviderConfig
+    #     spec:
+    #       serverUrl: http://argocd-server.krateo-system.svc:80
+    #       credentials:
+    #         source: Secret
+    #         secretRef:
+    #           namespace: krateo-system
+    #           name: argocd-initial-admin-secret
+    #           key: password
+    #       debugClient: true
+    #   patches:
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: metadata.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-pc"
+    #     - fromFieldPath: spec.namespace
+    #       toFieldPath: spec.credentials.secretRef.namespace
+    #     - fromFieldPath: spec.namespace
+    #       toFieldPath: spec.serverUrl
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "http://argocd-server.%s.svc:80"
+    #   readinessChecks:
+    #     - type: None
+    # - base:
+    #     apiVersion: argocd.krateo.io/v1alpha1
+    #     kind: Token
+    #     spec:
+    #       forProvider:
+    #         account: krateo-dashboard
+    #         writeTokenSecretToRef:
+    #           name: krateo-dashboard-argocd-token
+    #           key: authToken
+    #           namespace: krateo-system
+    #   patches:
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: metadata.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-argocd-token"
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: spec.providerConfigRef.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-pc"
+    #     - fromFieldPath: metadata.name
+    #       toFieldPath: spec.controllerConfigRef.name
+    #       transforms:
+    #         - type: string
+    #           string:
+    #             fmt: "%s-provider-argocd-cc"
+    #     - fromFieldPath: spec.namespace
+    #       toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
