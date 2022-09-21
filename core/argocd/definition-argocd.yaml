@@ -51,7 +51,3 @@ spec:
                             port:
                               description: service http port of argo-cd
                               type: integer
-                  required:
-                  - hostname
-              required:
-              - domain
