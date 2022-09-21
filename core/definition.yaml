@@ -31,12 +31,14 @@ spec:
                 protocol:
                   description: protocol of uris, i.e. http or https
                   type: string
+                  default: https
                 domain:
                   description: domain of uris, i.e. krateo.site
                   type: string
                 domainPort:
                   description: port of uris, i.e. <domain>:32000
                   type: integer
+                  default: 443
                 kongapigw:
                   description: kongapigw helm chart values
                   type: object
