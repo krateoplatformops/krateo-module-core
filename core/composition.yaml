@@ -704,6 +704,8 @@ spec:
         spec:
           kongapigw:
             version: 2.11.0
+            postgresql:
+              enabled: true
       patches:
         - fromFieldPath: metadata.name
           toFieldPath: metadata.name

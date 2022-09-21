@@ -25,9 +25,15 @@ spec:
                 platform:
                   description: Kubernetes distribution for Krateo, i.e. kubernetes, openshift
                   type: string
+                  enum:
+                  - kubernetes
+                  - openshift
+                  default:
+                    kubernetes
                 namespace:
                   description: Kubernetes namespace for Krateo, i.e. krateo-system
                   type: string
+                  default: krateo-system
                 protocol:
                   description: protocol of uris, i.e. http or https
                   type: string
@@ -108,6 +114,7 @@ spec:
                     hostname:
                       description: hostname of argo-cd, i.e. argo-cd.<domain>
                       type: string
+                      default: argocd
                     service:
                       description: service of argo-cd
                       type: object
@@ -145,6 +152,7 @@ spec:
                     hostname:
                       description: hostname of api, i.e. api.<domain>
                       type: string
+                      default: api
                     service:
                       description: service of api
                       type: object
@@ -178,6 +186,7 @@ spec:
                     hostname:
                       description: hostname of app, i.e. app.<domain>
                       type: string
+                      default: app
                     service:
                       description: service of app
                       type: object
@@ -454,6 +463,7 @@ spec:
                     hostname:
                       description: hostname of socket, socket-service.<domain>
                       type: string
+                      default: socket
                     service:
                       description: service of socket-service
                       type: object
@@ -496,4 +506,8 @@ spec:
                       description: codequality-service helm chart version
                       type: string
               required:
+              - platform
+              - namespace
+              - protocol
               - domain
+              - domainPort
