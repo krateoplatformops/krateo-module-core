@@ -3,19 +3,14 @@ kind: Core
 metadata:
   name: core
 spec:
-  namespace: jxp-krateo
+  namespace: krateo-system
   platform: kubernetes
   protocol: https
   domain: krateoplatformops.io
   domainPort: 443
   app:
     hostname: app
-  api:
-    hostname: api
   argo-cd:
     hostname: argocd
-  socket-service:
-    hostname: socket
-  kongapigw:
-    postgresql:
-      enabled: true
+  notification-service:
+    hostname: notification

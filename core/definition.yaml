@@ -140,38 +140,6 @@ spec:
                         uri:
                           description: dashboard-common-chart helm chart mongodb uri
                           type: string
-                api:
-                  description: api helm chart values
-                  type: object
-                  properties:
-                    version:
-                      description: api helm chart version
-                      type: string
-                    hostname:
-                      description: hostname of api, i.e. api.<domain>
-                      type: string
-                      default: api
-                    service:
-                      description: service of api
-                      type: object
-                      properties:
-                        http:
-                          description: service http of api
-                          type: object
-                          properties:
-                            port:
-                              description: service http port of api
-                              type: integer
-                    cookie:
-                      description: api cookie values
-                      type: object
-                      properties:
-                        secure:
-                          description: api cookie secure value
-                          type: string
-                        signed:
-                          description: api cookie signed value
-                          type: string
                 app:
                   description: app helm chart values
                   type: object
@@ -248,26 +216,12 @@ spec:
                     version:
                       description: deployment-service helm chart version
                       type: string
-                endpoint-service:
-                  description: endpoint-service helm chart values
-                  type: object
-                  properties:
-                    version:
-                      description: endpoint-service helm chart version
-                      type: string
                 git-service:
                   description: git-service helm chart values
                   type: object
                   properties:
                     version:
                       description: git-service helm chart version
-                      type: string
-                kube-bridge:
-                  description: kube-bridge helm chart values
-                  type: object
-                  properties:
-                    version:
-                      description: kube-bridge helm chart version
                       type: string
                 kubernetes-service:
                   description: kubernetes-service helm chart values
@@ -276,35 +230,20 @@ spec:
                     version:
                       description: kubernetes-service helm chart version
                       type: string
-                log-service:
-                  description: log-service helm chart values
+                event-service:
+                  description: event-service helm chart values
                   type: object
                   properties:
                     version:
-                      description: log-service helm chart version
+                      description: event-service helm chart version
                       type: string
-                socket-service:
-                  description: socket-service helm chart values
+                notification-service:
+                  description: notification-service helm chart values
                   type: object
                   properties:
                     version:
-                      description: socket-service helm chart version
+                      description: notification-service helm chart version
                       type: string
-                    hostname:
-                      description: hostname of socket, socket-service.<domain>
-                      type: string
-                      default: socket
-                    service:
-                      description: service of socket-service
-                      type: object
-                      properties:
-                        http:
-                          description: service http of socket-service
-                          type: object
-                          properties:
-                            port:
-                              description: service http port of socket-service
-                              type: integer
                 template-service:
                   description: template-service helm chart values
                   type: object
@@ -325,13 +264,6 @@ spec:
                   properties:
                     version:
                       description: pipeline-service helm chart version
-                      type: string
-                codequality-service:
-                  description: codequality-service helm chart values
-                  type: object
-                  properties:
-                    version:
-                      description: codequality-service helm chart version
                       type: string
               required:
               - domain
