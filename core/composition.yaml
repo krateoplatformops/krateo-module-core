@@ -63,7 +63,7 @@ spec:
             chart:
               name: dashboard-common-chart
               repository: https://charts.krateo.io
-              version: 1.1.11
+              version: 1.1.12
             namespace: krateo-system
             # values:
             #   services:
@@ -193,6 +193,17 @@ spec:
         #     - type: string
         #       string:
         #         fmt: "http://capi-service-service.%s.svc"
+
+        - fromFieldPath: spec.title
+          toFieldPath: spec.forProvider.values.title
+        - fromFieldPath: spec.protocol
+          toFieldPath: spec.forProvider.values.schema
+        - fromFieldPath: spec.domain
+          toFieldPath: spec.forProvider.values.domain.base
+        - fromFieldPath: spec.api.hostname
+          toFieldPath: spec.forProvider.values.domain.api
+        - fromFieldPath: spec.app.hostname
+          toFieldPath: spec.forProvider.values.domain.app  
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
@@ -223,28 +234,28 @@ spec:
             - type: string
               string:
                 fmt: "%s-provider-helm-pc-in"
-        - type: CombineFromComposite
-          combine:
-            variables:
-              - fromFieldPath: spec.protocol
-              - fromFieldPath: spec.api.hostname
-              - fromFieldPath: spec.domain
-              - fromFieldPath: spec.domainPort
-            strategy: string
-            string:
-              fmt: "%s://%s.%s:%d"
-          toFieldPath: spec.forProvider.values.uris.api
-        - type: CombineFromComposite
-          combine:
-            variables:
-              - fromFieldPath: spec.protocol
-              - fromFieldPath: spec.socket-service.hostname
-              - fromFieldPath: spec.domain
-              - fromFieldPath: spec.domainPort
-            strategy: string
-            string:
-              fmt: "%s://%s.%s:%d"
-          toFieldPath: spec.forProvider.values.uris.socket
+        # - type: CombineFromComposite
+        #   combine:
+        #     variables:
+        #       - fromFieldPath: spec.protocol
+        #       - fromFieldPath: spec.api.hostname
+        #       - fromFieldPath: spec.domain
+        #       - fromFieldPath: spec.domainPort
+        #     strategy: string
+        #     string:
+        #       fmt: "%s://%s.%s:%d"
+        #   toFieldPath: spec.forProvider.values.uris.api
+        # - type: CombineFromComposite
+        #   combine:
+        #     variables:
+        #       - fromFieldPath: spec.protocol
+        #       - fromFieldPath: spec.socket-service.hostname
+        #       - fromFieldPath: spec.domain
+        #       - fromFieldPath: spec.domainPort
+        #     strategy: string
+        #     string:
+        #       fmt: "%s://%s.%s:%d"
+        #   toFieldPath: spec.forProvider.values.uris.socket
         - type: CombineFromComposite
           combine:
             variables:

@@ -10,6 +10,8 @@ spec:
   domainPort: 443
   app:
     hostname: app
+  api:
+    hostname: api
   argo-cd:
     hostname: argocd
   notification-service:

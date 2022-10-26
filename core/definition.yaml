@@ -195,6 +195,17 @@ spec:
                     #       key:
                     #         description: ingress key will only be used, if the secret will be created by this chart
                     #         type: string
+                api:
+                  description: api helm chart values
+                  type: object
+                  properties:
+                    version:
+                      description: api helm chart version
+                      type: string
+                    hostname:
+                      description: hostname of api, i.e. api.<domain>
+                      type: string
+                      default: api
                 argocd-service:
                   description: argocd-service helm chart values
                   type: object
