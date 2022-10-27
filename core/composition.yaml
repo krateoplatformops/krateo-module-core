@@ -63,7 +63,7 @@ spec:
             chart:
               name: dashboard-common-chart
               repository: https://charts.krateo.io
-              version: 1.1.13
+              version: 1.1.14
             namespace: krateo-system
             # values:
             #   services:
