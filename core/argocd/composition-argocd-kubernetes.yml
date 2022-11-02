@@ -197,6 +197,11 @@ spec:
                 fmt: "%s-provider-argocd-cc"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.atProvider.manifest.data[bearer]
+          toFieldPath: status.bearer
+          policy:
+            fromFieldPath: Required
     - base:
         apiVersion: kubernetes.crossplane.io/v1alpha1
         kind: ProviderConfig
@@ -254,3 +259,8 @@ spec:
         #     - type: string
         #       string:
         #         fmt: "http://argocd-server.%s.svc"
+        - type: ToCompositeFieldPath
+          fromFieldPath: status.bearer
+          toFieldPath: status.forProvider.manifest.data[bearer]
+          policy:
+            fromFieldPath: Required
