@@ -460,7 +460,7 @@ spec:
             chart:
               name: event-service
               repository: https://charts.krateo.io
-              version: 1.1.1
+              version: 1.1.4
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.event-service.version
