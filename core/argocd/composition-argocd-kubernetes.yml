@@ -174,7 +174,7 @@ spec:
             account: krateo-dashboard
             writeTokenSecretToRef:
               name: argocd-endpoint
-              key: authToken
+              key: bearer
               namespace: krateo-system
       patches:
         - fromFieldPath: metadata.name
@@ -231,6 +231,8 @@ spec:
                   group: endpoint
                   icon: fa-solid_fa-truck
                   type: argocd
+              data:
+                target: http://argocd-server.krateo-system.svc
       patches:
         - fromFieldPath: "metadata.name"
           toFieldPath: "metadata.name"
@@ -246,3 +248,9 @@ spec:
                 fmt: "%s-provider-k8s-pc-in"
         - fromFieldPath: "spec.namespace"
           toFieldPath: "spec.forProvider.manifest.metadata.namespace"
+        - fromFieldPath: "spec.namespace"
+          toFieldPath: "spec.forProvider.manifest.data.target"
+          transforms:
+            - type: string
+              string:
+                fmt: "http://argocd-server.%s.svc"
