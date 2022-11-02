@@ -232,7 +232,7 @@ spec:
                   icon: fa-solid_fa-truck
                   type: argocd
               data:
-                target: http://argocd-server.krateo-system.svc
+                target: aHR0cDovL2FyZ29jZC1zZXJ2ZXIua3JhdGVvLXN5c3RlbS5zdmM=
       patches:
         - fromFieldPath: "metadata.name"
           toFieldPath: "metadata.name"
@@ -248,9 +248,9 @@ spec:
                 fmt: "%s-provider-k8s-pc-in"
         - fromFieldPath: "spec.namespace"
           toFieldPath: "spec.forProvider.manifest.metadata.namespace"
-        - fromFieldPath: "spec.namespace"
-          toFieldPath: "spec.forProvider.manifest.data.target"
-          transforms:
-            - type: string
-              string:
-                fmt: "http://argocd-server.%s.svc"
+        # - fromFieldPath: "spec.namespace"
+        #   toFieldPath: "spec.forProvider.manifest.data.target"
+        #   transforms:
+        #     - type: string
+        #       string:
+        #         fmt: "http://argocd-server.%s.svc"
