@@ -276,5 +276,12 @@ spec:
                     version:
                       description: pipeline-service helm chart version
                       type: string
+                eventrouter:
+                  description: eventrouter helm chart values
+                  type: object
+                  properties:
+                    version:
+                      description: eventrouter helm chart version
+                      type: string
               required:
               - domain

@@ -29,7 +29,7 @@ spec:
         kind: Release
         metadata:
           annotations:
-            crossplane.io/external-name: argocd
+            crossplane.io/external-name: argocd-server
         spec:
           forProvider:
             chart:
@@ -141,7 +141,7 @@ spec:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: ProviderConfig
         spec:
-          serverUrl: http://argocd-server.krateo-system.svc:80
+          serverUrl: http://argocd-server-service.krateo-system.svc:80
           credentials:
             source: Secret
             secretRef:
@@ -163,7 +163,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "http://argocd-server.%s.svc:80"
+                fmt: "http://argocd-server-service.%s.svc:80"
       readinessChecks:
         - type: None
     - base:
