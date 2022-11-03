@@ -134,7 +134,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-cc"
+                fmt: "%s-provider-argocd-endpoint-cc"
       readinessChecks:
         - type: None
     - base:
@@ -155,7 +155,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-pc"
+                fmt: "%s-provider-argocd-endpoint-pc"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.credentials.secretRef.namespace
         - fromFieldPath: spec.namespace
@@ -168,13 +168,14 @@ spec:
         - type: None
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
-        kind: Token
+        kind: Endpoint
+        metadata:
+          name: argocd-endpoint
         spec:
           forProvider:
             account: krateo-dashboard
-            writeTokenSecretToRef:
+            writeSecretToRef:
               name: argocd-endpoint
-              key: bearer
               namespace: krateo-system
       patches:
         - fromFieldPath: metadata.name
@@ -188,79 +189,12 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-pc"
+                fmt: "%s-provider-argocd-endpoint-pc"
         - fromFieldPath: metadata.name
           toFieldPath: spec.controllerConfigRef.name
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-cc"
+                fmt: "%s-provider-argocd-endpoint-cc"
         - fromFieldPath: spec.namespace
-          toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
-        # - type: ToCompositeFieldPath
-        #   fromFieldPath: status.data[bearer]
-        #   toFieldPath: status.bearer
-        #   policy:
-        #     fromFieldPath: Required
-    - base:
-        apiVersion: kubernetes.crossplane.io/v1alpha1
-        kind: ProviderConfig
-        spec:
-          credentials:
-            source: InjectedIdentity
-      patches:
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-k8s-pc-in"
-      readinessChecks:
-        - type: None
-    # - base:
-    #     apiVersion: kubernetes.crossplane.io/v1alpha1
-    #     kind: Object
-    #     spec:
-    #       managementPolicy: ObserveCreateUpdate
-    #       forProvider:
-    #         manifest:
-    #           apiVersion: v1
-    #           kind: Secret
-    #           type: Opaque
-    #           metadata:
-    #             name: argocd-endpoint
-    #             namespace: krateo-system
-    #             labels:
-    #               app.kubernetes.io/created-by: krateo
-    #               category: delivery
-    #               group: endpoint
-    #               icon: fa-solid_fa-truck
-    #               type: argocd
-    #           data:
-    #             target: aHR0cDovL2FyZ29jZC1zZXJ2ZXIua3JhdGVvLXN5c3RlbS5zdmM=
-    #   patches:
-    #     - fromFieldPath: "metadata.name"
-    #       toFieldPath: "metadata.name"
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-argocd-endpoint-object"
-    #     - fromFieldPath: metadata.name
-    #       toFieldPath: spec.providerConfigRef.name
-    #       transforms:
-    #         - type: string
-    #           string:
-    #             fmt: "%s-provider-k8s-pc-in"
-    #     - fromFieldPath: "spec.namespace"
-    #       toFieldPath: "spec.forProvider.manifest.metadata.namespace"
-        # - fromFieldPath: "spec.namespace"
-        #   toFieldPath: "spec.forProvider.manifest.data.target"
-        #   transforms:
-        #     - type: string
-        #       string:
-        #         fmt: "http://argocd-server.%s.svc"
-        # - type: ToCompositeFieldPath
-        #   fromFieldPath: status.bearer
-        #   toFieldPath: status.forProvider.manifest.data[bearer]
-        #   policy:
-        #     fromFieldPath: Required
+          toFieldPath: spec.forProvider.writeSecretToRef.namespace

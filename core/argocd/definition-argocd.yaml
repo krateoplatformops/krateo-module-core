@@ -51,8 +51,3 @@ spec:
                             port:
                               description: service http port of argo-cd
                               type: integer
-            status:
-              properties:
-                bearer:
-                  properties:
-                    type: string
