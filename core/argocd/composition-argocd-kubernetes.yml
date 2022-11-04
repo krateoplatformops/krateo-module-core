@@ -40,7 +40,6 @@ spec:
             skipCreateNamespace: true
             values:
               server:
-                name: null
                 extraArgs:
                   - --insecure
                 rbacConfig:
@@ -142,7 +141,7 @@ spec:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: ProviderConfig
         spec:
-          serverUrl: http://argocd-server.krateo-system.svc:80
+          serverUrl: http://argocd-server-server.krateo-system.svc:80
           credentials:
             source: Secret
             secretRef:
@@ -164,7 +163,7 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "http://argocd-server.%s.svc:80"
+                fmt: "http://argocd-server-server.%s.svc:80"
       readinessChecks:
         - type: None
     - base:
