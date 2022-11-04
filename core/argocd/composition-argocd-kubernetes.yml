@@ -40,6 +40,7 @@ spec:
             skipCreateNamespace: true
             values:
               server:
+                name: ""
                 extraArgs:
                   - --insecure
                 rbacConfig:
