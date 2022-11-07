@@ -144,7 +144,9 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-cc"
+                fmt: "%s-provider-argocd-endpoint-cc"
+      readinessChecks:
+        - type: None
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
         kind: ProviderConfig
@@ -163,22 +165,27 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-pc"
+                fmt: "%s-provider-argocd-endpoint-pc"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.credentials.secretRef.namespace
+        - fromFieldPath: spec.namespace
+          toFieldPath: spec.serverUrl
+          transforms:
+            - type: string
+              string:
+                fmt: "http://krateo-argocd-server.%s.svc:80"
       readinessChecks:
         - type: None
     - base:
         apiVersion: argocd.krateo.io/v1alpha1
-        kind: Token
+        kind: Endpoint
         metadata:
-          name: krateo-dashboard-argocd-token
+          name: argocd-endpoint
         spec:
           forProvider:
             account: krateo-dashboard
-            writeTokenSecretToRef:
-              name: krateo-dashboard-argocd-token
-              key: authToken
+            writeSecretToRef:
+              name: argocd-endpoint
               namespace: krateo-system
       patches:
         - fromFieldPath: metadata.name
@@ -186,18 +193,18 @@ spec:
           transforms:
             - type: string
               string:
-                fmt: "%s-argocd-token"
+                fmt: "%s-argocd-endpoint"
         - fromFieldPath: metadata.name
           toFieldPath: spec.providerConfigRef.name
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-pc"
+                fmt: "%s-provider-argocd-endpoint-pc"
         - fromFieldPath: metadata.name
           toFieldPath: spec.controllerConfigRef.name
           transforms:
             - type: string
               string:
-                fmt: "%s-provider-argocd-cc"
+                fmt: "%s-provider-argocd-endpoint-cc"
         - fromFieldPath: spec.namespace
-          toFieldPath: spec.forProvider.writeTokenSecretToRef.namespace
+          toFieldPath: spec.forProvider.writeSecretToRef.namespace
