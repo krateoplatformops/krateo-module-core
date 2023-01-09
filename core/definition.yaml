@@ -28,12 +28,12 @@ spec:
                   enum:
                   - kubernetes
                   - openshift
-                  default:
-                    kubernetes
+                  # default:
+                  #   kubernetes
                 namespace:
                   description: Kubernetes namespace for Krateo, i.e. krateo-system
                   type: string
-                  default: krateo-system
+                  # default: krateo-system
                 protocol:
                   description: protocol of uris, i.e. http or https
                   type: string
