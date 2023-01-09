@@ -3,6 +3,7 @@ kind: Core
 metadata:
   name: core
 spec:
+  namespace: krateo-system
   platform: openshift
   protocol: https
   domain: krateoplatformops.io
@@ -13,8 +14,5 @@ spec:
     hostname: api
   argo-cd:
     hostname: argocd
-  socket-service:
-    hostname: socket
-  kong:
-    postgresql:
-      enabled: true
+  notification-service:
+    hostname: notification
