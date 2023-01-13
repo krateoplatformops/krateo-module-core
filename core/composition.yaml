@@ -340,7 +340,7 @@ spec:
             chart:
               name: krateo-crds
               repository: https://charts.krateo.io
-              version: 0.3.5
+              version: 0.3.8
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.krateo-crds.version
@@ -400,7 +400,7 @@ spec:
             chart:
               name: git-service
               repository: https://charts.krateo.io
-              version: 1.0.5
+              version: 1.0.6
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.git-service.version
@@ -529,7 +529,7 @@ spec:
             chart:
               name: template-service
               repository: https://charts.krateo.io
-              version: 1.2.3
+              version: 1.2.6
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.template-service.version
