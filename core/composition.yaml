@@ -280,7 +280,7 @@ spec:
             chart:
               name: argocd-service
               repository: https://charts.krateo.io
-              version: 1.0.6
+              version: 1.0.7
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.argocd-service.version
@@ -310,7 +310,7 @@ spec:
             chart:
               name: auth-service
               repository: https://charts.krateo.io
-              version: 1.1.11
+              version: 1.1.13
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.auth-service.version
@@ -370,7 +370,7 @@ spec:
             chart:
               name: deployment-service
               repository: https://charts.krateo.io
-              version: 1.2.20
+              version: 1.2.21
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.deployment-service.version
@@ -400,7 +400,7 @@ spec:
             chart:
               name: git-service
               repository: https://charts.krateo.io
-              version: 1.0.6
+              version: 1.0.8
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.git-service.version
@@ -430,7 +430,7 @@ spec:
             chart:
               name: kubernetes-service
               repository: https://charts.krateo.io
-              version: 1.1.0
+              version: 1.1.1
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.kubernetes-service.version
@@ -460,7 +460,7 @@ spec:
             chart:
               name: event-service
               repository: https://charts.krateo.io
-              version: 1.1.5
+              version: 1.1.6
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.event-service.version
@@ -490,7 +490,7 @@ spec:
             chart:
               name: notification-service
               repository: https://charts.krateo.io
-              version: 1.1.5
+              version: 1.1.6
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.notification-service.version
@@ -559,7 +559,7 @@ spec:
             chart:
               name: secret-service
               repository: https://charts.krateo.io
-              version: 1.1.3
+              version: 1.1.4
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.secret-service.version
@@ -657,7 +657,7 @@ spec:
             chart:
               name: provider-service
               repository: https://charts.krateo.io
-              version: 1.0.7
+              version: 1.0.8
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.provider-service.version
