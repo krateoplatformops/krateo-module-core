@@ -63,7 +63,7 @@ spec:
             chart:
               name: dashboard-common-chart
               repository: https://charts.krateo.io
-              version: 1.1.15
+              version: 1.1.16
             namespace: krateo-system
             # values:
             #   services:
@@ -204,6 +204,8 @@ spec:
           toFieldPath: spec.forProvider.values.domain.api
         - fromFieldPath: spec.app.hostname
           toFieldPath: spec.forProvider.values.domain.app
+        - fromFieldPath: spec.platform
+          toFieldPath: spec.forProvider.values.platform
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
@@ -628,7 +630,7 @@ spec:
         kind: kongapigw
         spec:
           kongapigw:
-            version: 2.13.1
+            version: 2.15.2
             # postgresql:
             #   enabled: true
       patches:
