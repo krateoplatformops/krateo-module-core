@@ -342,7 +342,7 @@ spec:
             chart:
               name: krateo-crds
               repository: https://charts.krateo.io
-              version: 0.3.8
+              version: 0.3.9
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.krateo-crds.version
