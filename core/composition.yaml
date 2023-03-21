@@ -217,7 +217,7 @@ spec:
             chart:
               name: app
               repository: https://charts.krateo.io
-              version: 1.2.16
+              version: 1.2.20
             namespace: krateo-system
             values:
               fullnameOverride: app
