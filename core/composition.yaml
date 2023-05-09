@@ -421,36 +421,36 @@ spec:
                 fmt: "%s-provider-helm-pc-in"
         - fromFieldPath: spec.namespace
           toFieldPath: spec.forProvider.namespace
-    - base:
-        apiVersion: helm.crossplane.io/v1beta1
-        kind: Release
-        metadata:
-          annotations:
-            crossplane.io/external-name: kubernetes
-        spec:
-          forProvider:
-            chart:
-              name: kubernetes-service
-              repository: https://charts.krateo.io
-              version: 1.1.1
-            namespace: krateo-system
-      patches:
-        - fromFieldPath: spec.kubernetes-service.version
-          toFieldPath: spec.forProvider.chart.version
-        - fromFieldPath: metadata.name
-          toFieldPath: metadata.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-release-kubernetes-service"
-        - fromFieldPath: metadata.name
-          toFieldPath: spec.providerConfigRef.name
-          transforms:
-            - type: string
-              string:
-                fmt: "%s-provider-helm-pc-in"
-        - fromFieldPath: spec.namespace
-          toFieldPath: spec.forProvider.namespace
+#    - base:
+#        apiVersion: helm.crossplane.io/v1beta1
+#        kind: Release
+#        metadata:
+#          annotations:
+#            crossplane.io/external-name: kubernetes
+#        spec:
+#          forProvider:
+#            chart:
+#              name: kubernetes-service
+#              repository: https://charts.krateo.io
+#              version: 1.1.1
+#            namespace: krateo-system
+#      patches:
+#        - fromFieldPath: spec.kubernetes-service.version
+#          toFieldPath: spec.forProvider.chart.version
+#        - fromFieldPath: metadata.name
+#          toFieldPath: metadata.name
+#          transforms:
+#            - type: string
+#              string:
+#                fmt: "%s-release-kubernetes-service"
+#        - fromFieldPath: metadata.name
+#          toFieldPath: spec.providerConfigRef.name
+#          transforms:
+#            - type: string
+#              string:
+#                fmt: "%s-provider-helm-pc-in"
+#        - fromFieldPath: spec.namespace
+#          toFieldPath: spec.forProvider.namespace
     - base:
         apiVersion: helm.crossplane.io/v1beta1
         kind: Release
