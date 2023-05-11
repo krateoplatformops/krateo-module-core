@@ -217,7 +217,7 @@ spec:
             chart:
               name: app
               repository: https://charts.krateo.io
-              version: 1.2.20
+              version: 1.2.22
             namespace: krateo-system
             values:
               fullnameOverride: app
@@ -372,7 +372,7 @@ spec:
             chart:
               name: deployment-service
               repository: https://charts.krateo.io
-              version: 1.2.21
+              version: 1.2.25
             namespace: krateo-system
       patches:
         - fromFieldPath: spec.deployment-service.version
