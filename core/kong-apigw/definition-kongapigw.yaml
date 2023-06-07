@@ -80,8 +80,5 @@ spec:
                             nodePort:
                               description: kongapigw helm chart proxy https nodePort value
                               type: integer
-                        ingress:
-                          type: object
-                          properties:
-                            loadBalancerIP:
-                              type: string
+                        loadBalancerIP:
+                          type: string

@@ -54,8 +54,8 @@ spec:
           toFieldPath: spec.forProvider.values.proxy.http.nodePort
         - fromFieldPath: spec.kongapigw.proxy.https.nodePort
           toFieldPath: spec.forProvider.values.proxy.https.nodePort
-        - fromFieldPath: spec.kongapigw.proxy.ingress.loadBalancerIP
-          toFieldPath: spec.forProvider.values.proxy.ingress.loadBalancerIP
+        - fromFieldPath: spec.kongapigw.proxy.loadBalancerIP
+          toFieldPath: spec.forProvider.values.proxy.loadBalancerIP
         - fromFieldPath: spec.kongapigw.proxy.type
           toFieldPath: spec.forProvider.values.proxy.type
         - fromFieldPath: metadata.name
