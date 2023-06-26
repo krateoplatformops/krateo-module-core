@@ -286,5 +286,3 @@ spec:
                     version:
                       description: eventrouter helm chart version
                       type: string
-              required:
-              - domain
